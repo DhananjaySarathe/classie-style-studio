@@ -9,7 +9,6 @@ const items = [
 ];
 
 export function AnnouncementBar() {
-  console.log("AnnouncementBar rendered");
   const loop = [...items, ...items, ...items];
   return (
     <div className="bg-ink text-cream-warm overflow-hidden relative">
