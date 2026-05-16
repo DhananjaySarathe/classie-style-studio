@@ -1,5 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Search, User, Heart, ShoppingBag, ChevronDown } from "lucide-react";
+import { useState } from "react";
+import { SearchModal } from "@/components/SearchModal";
 
 const links = [
   { label: "Heels", to: "/collections/heels" },
@@ -11,6 +13,7 @@ const links = [
 
 export function MainNav() {
   const path = useRouterState({ select: (s) => s.location.pathname });
+  const [searchOpen, setSearchOpen] = useState(false);
   return (
     <header className="bg-cream-bg border-b border-soft-border sticky top-0 z-40">
       <div className="max-w-[1440px] mx-auto px-7 md:px-7 px-4 flex items-center justify-between py-4">
@@ -38,7 +41,11 @@ export function MainNav() {
           </nav>
         </div>
         <div className="flex items-center gap-5 text-ink">
-          <button aria-label="Search" className="hover:opacity-60 transition-opacity">
+          <button
+            aria-label="Search"
+            onClick={() => setSearchOpen(true)}
+            className="hover:opacity-60 transition-opacity"
+          >
             <Search size={14} strokeWidth={1.25} />
           </button>
           <Link to="/account" aria-label="Account" className="hover:opacity-60 transition-opacity">
@@ -53,6 +60,7 @@ export function MainNav() {
           </Link>
         </div>
       </div>
+      <SearchModal open={searchOpen} onOpenChange={setSearchOpen} />
     </header>
   );
 }
