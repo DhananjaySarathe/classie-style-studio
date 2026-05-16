@@ -7,6 +7,8 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/lib/auth";
 
 import appCss from "../styles.css?url";
 
@@ -73,10 +75,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "CLASSIE — One Heel. Endless Looks." },
-      { name: "description", content: "Modular heels and clip-on charms designed and made in India. Style one pair endless ways." },
+      {
+        name: "description",
+        content:
+          "Modular heels and clip-on charms designed and made in India. Style one pair endless ways.",
+      },
       { name: "author", content: "CLASSIE" },
       { property: "og:title", content: "CLASSIE — One Heel. Endless Looks." },
-      { property: "og:description", content: "Modular heels and clip-on charms designed and made in India." },
+      {
+        property: "og:description",
+        content: "Modular heels and clip-on charms designed and made in India.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
@@ -113,7 +122,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <AuthProvider>
+        <Outlet />
+        <Toaster position="bottom-center" />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
