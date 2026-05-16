@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Search, X } from "lucide-react";
+import { Search } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { products, type Product } from "@/data/products";
 
@@ -40,11 +40,10 @@ export function SearchModal({ open, onOpenChange }: Props) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        showCloseButton={false}
         className="max-w-3xl bg-cream-bg border-soft-border p-0 gap-0 max-h-[85vh] overflow-hidden flex flex-col"
       >
         <DialogTitle className="sr-only">Search products</DialogTitle>
-        <div className="flex items-center gap-3 px-6 py-5 border-b border-soft-border">
+        <div className="flex items-center gap-3 px-6 py-5 border-b border-soft-border pr-12">
           <Search size={16} strokeWidth={1.25} className="text-ink/60" />
           <input
             autoFocus
@@ -53,13 +52,6 @@ export function SearchModal({ open, onOpenChange }: Props) {
             placeholder="Search heels, charms, colours…"
             className="flex-1 bg-transparent outline-none text-[14px] text-ink placeholder:text-ink/40"
           />
-          <button
-            onClick={() => onOpenChange(false)}
-            aria-label="Close"
-            className="text-ink/60 hover:text-ink"
-          >
-            <X size={16} strokeWidth={1.25} />
-          </button>
         </div>
 
         <div className="px-6 py-4 border-b border-soft-border grid gap-3 text-[11px] tracking-[0.18em] uppercase text-ink/70">
