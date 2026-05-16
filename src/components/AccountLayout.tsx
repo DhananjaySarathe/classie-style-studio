@@ -9,7 +9,11 @@ const NAV: NavItem[] = [
   { label: "Dashboard", href: "/account", match: (p) => p === "/account" },
   { label: "Wishlist", href: "/account/wishlist", match: (p) => p === "/account/wishlist" },
   { label: "Addresses", href: "/account/addresses", match: (p) => p === "/account/addresses" },
-  { label: "Returns", href: "/account/returns/new", match: (p) => p.startsWith("/account/returns") },
+  {
+    label: "Returns",
+    href: "/account/returns/new",
+    match: (p) => p.startsWith("/account/returns"),
+  },
 ];
 
 export function AccountLayout({ title, children }: { title: string; children: ReactNode }) {

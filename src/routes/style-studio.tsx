@@ -79,7 +79,10 @@ function StyleStudioPage() {
   async function saveLook() {
     if (!user) {
       toast("Sign in to save this look", {
-        action: { label: "Sign in", onClick: () => navigate({ to: "/auth/login", search: {} as never }) },
+        action: {
+          label: "Sign in",
+          onClick: () => navigate({ to: "/auth/login", search: {} as never }),
+        },
       });
       return;
     }
@@ -161,7 +164,7 @@ function StyleStudioPage() {
         />
       </div>
 
-      <div className="fixed bottom-0 inset-x-0 bg-ink text-cream-bg z-30 border-t border-soft-border">
+      <div className="fixed bottom-0 inset-x-0 bg-ink text-bg z-30 border-t border-border">
         <div className="max-w-[1440px] mx-auto px-4 md:px-7 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <div className="text-[11px] uppercase tracking-[0.18em] opacity-80">
             Your look:{" "}
@@ -179,7 +182,7 @@ function StyleStudioPage() {
           </div>
           <button
             onClick={addBundle}
-            className="bg-cream-bg text-ink px-6 py-3 text-[11px] uppercase tracking-[0.18em] hover:bg-burgundy hover:text-cream-bg transition-colors"
+            className="bg-bg text-ink px-6 py-3 text-[11px] uppercase tracking-[0.18em] hover:bg-burgundy hover:text-bg transition-colors"
           >
             {charm ? "Add bundle to bag" : "Add heel to bag"}
           </button>

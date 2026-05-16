@@ -2,14 +2,19 @@
 @source "../src";
 @import "tw-animate-css";
 
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Inter:wght@400;500&display=swap");
+/*
+ * Fonts. Cormorant Garamond for display (italic 500 + roman 500).
+ * Geist for everything else — distinctive geometric sans, replaces Inter.
+ */
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Geist:wght@300;400;500;600&display=swap");
 
 @custom-variant dark (&:is(.dark *));
 
 /*
- * CLASSIE design system.
- * Editorial-minimalist. Cream surfaces, ink type, burgundy accent (used sparingly).
- * No shadows, no gradients, no rounded pills. Borders are 0.5px soft-border.
+ * CLASSIE design system — Phase 2 (white-base editorial).
+ * Pure white surface; cream reserved for occasional warm bands.
+ * Burgundy used sparingly. Deeper ink for typographic weight on white.
+ * No shadows, no gradients, no rounded pills. Borders are 0.5px.
  */
 
 @theme inline {
@@ -18,47 +23,53 @@
   --radius-lg: 4px;
   --radius-xl: 4px;
 
-  --color-background: var(--cream-bg);
+  --color-background: var(--bg);
   --color-foreground: var(--ink);
-  --color-card: var(--cream-bg);
+  --color-card: var(--bg);
   --color-card-foreground: var(--ink);
-  --color-popover: var(--cream-bg);
+  --color-popover: var(--bg);
   --color-popover-foreground: var(--ink);
   --color-primary: var(--ink);
-  --color-primary-foreground: var(--cream-bg);
-  --color-secondary: var(--cream-warm);
+  --color-primary-foreground: var(--bg);
+  --color-secondary: var(--bg-soft);
   --color-secondary-foreground: var(--ink);
-  --color-muted: var(--cream-warm);
+  --color-muted: var(--bg-soft);
   --color-muted-foreground: var(--stone);
   --color-accent: var(--burgundy);
-  --color-accent-foreground: var(--cream-bg);
+  --color-accent-foreground: var(--bg);
   --color-destructive: var(--danger);
-  --color-destructive-foreground: var(--cream-bg);
-  --color-border: var(--soft-border);
-  --color-input: var(--soft-border);
+  --color-destructive-foreground: var(--bg);
+  --color-border: var(--border);
+  --color-input: var(--border);
   --color-ring: var(--ink);
 
-  --color-cream-bg: var(--cream-bg);
-  --color-cream-warm: var(--cream-warm);
+  /* Semantic aliases (new naming) */
+  --color-bg: var(--bg);
+  --color-bg-soft: var(--bg-soft);
   --color-card-tint: var(--card-tint);
   --color-ink: var(--ink);
   --color-stone: var(--stone);
-  --color-soft-border: var(--soft-border);
   --color-burgundy: var(--burgundy);
   --color-success: var(--success);
   --color-danger: var(--danger);
 
+  /* Backwards-compat aliases — existing components still use bg-cream-bg etc.
+     Mapping them to the new tokens avoids a sweeping rename. */
+  --color-cream-bg: var(--bg);
+  --color-cream-warm: var(--bg-soft);
+  --color-soft-border: var(--border);
+
   --font-display: "Cormorant Garamond", Georgia, serif;
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-sans: "Geist", system-ui, -apple-system, sans-serif;
 }
 
 :root {
-  --cream-bg: #fbf9f4;
-  --cream-warm: #f4ecde;
-  --card-tint: #f0e5d2;
-  --ink: #2b2521;
-  --stone: #8b7b6a;
-  --soft-border: #ebe2d0;
+  --bg: #ffffff;
+  --bg-soft: #f7f5f1;
+  --card-tint: #f2efe9;
+  --ink: #1a1715;
+  --stone: #6b655f;
+  --border: #e8e5de;
   --burgundy: #6b1a2d;
   --success: #3b6d11;
   --danger: #a32d2d;
@@ -66,18 +77,20 @@
 
 @layer base {
   * {
-    border-color: var(--soft-border);
+    border-color: var(--border);
   }
 
   html,
   body {
-    background-color: var(--cream-bg);
+    background-color: var(--bg);
     color: var(--ink);
     font-family: var(--font-sans);
     font-weight: 400;
-    font-size: 13px;
-    line-height: 1.8;
+    font-size: 14px;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "ss01", "cv11";
   }
 
   h1,
@@ -88,8 +101,13 @@
   h6 {
     font-family: var(--font-display);
     font-weight: 500;
-    line-height: 1.1;
-    letter-spacing: -0.01em;
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+  }
+
+  ::selection {
+    background: var(--ink);
+    color: var(--bg);
   }
 }
 
@@ -111,19 +129,24 @@
     align-items: center;
     justify-content: center;
     background: var(--ink);
-    color: var(--cream-bg);
+    color: var(--bg);
     font-family: var(--font-sans);
     font-weight: 500;
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.18em;
-    padding: 11px 22px;
+    padding: 12px 24px;
     border-radius: 2px;
-    transition: background 200ms ease;
+    transition:
+      background 200ms ease,
+      transform 200ms ease;
     cursor: pointer;
   }
   .btn-primary:hover {
     background: var(--burgundy);
+  }
+  .btn-primary:active {
+    transform: scale(0.98);
   }
 
   .btn-secondary {
@@ -136,7 +159,7 @@
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.18em;
-    padding: 11px 0;
+    padding: 12px 0;
     border-bottom: 0.5px solid var(--ink);
     cursor: pointer;
     transition: opacity 200ms ease;
@@ -148,19 +171,22 @@
   .display-hero {
     font-family: var(--font-display);
     font-weight: 500;
-    font-size: clamp(38px, 5.4vw, 54px);
-    line-height: 1.05;
+    font-size: clamp(44px, 6.4vw, 76px);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
   }
   .display-section {
     font-family: var(--font-display);
     font-weight: 500;
-    font-size: clamp(26px, 3.2vw, 32px);
-    line-height: 1.1;
+    font-size: clamp(28px, 3.6vw, 38px);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
   }
   .display-page {
     font-family: var(--font-display);
     font-weight: 500;
-    font-size: 28px;
+    font-size: 32px;
+    letter-spacing: -0.015em;
   }
   .display-product {
     font-family: var(--font-display);
@@ -171,8 +197,25 @@
     font-style: italic;
     color: var(--burgundy);
   }
+
+  /* Editorial helpers */
+  .rule {
+    width: 24px;
+    height: 1px;
+    background: var(--ink);
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .dot-burgundy {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--burgundy);
+    display: inline-block;
+  }
 }
 
+/* Marquee */
 @keyframes marquee {
   0% {
     transform: translateX(0);
@@ -188,6 +231,7 @@
   animation: marquee 22s linear infinite;
 }
 
+/* Fade-in (existing) */
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -198,4 +242,33 @@
 }
 .animate-fade-in {
   animation: fade-in 200ms ease-out;
+}
+
+/* Editorial reveal — fade + slight rise. Used on hero caption staggers. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.rise-in {
+  animation: rise-in 600ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/* Carousel progress bar fill */
+@keyframes progress-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.progress-fill {
+  transform-origin: left;
+  animation: progress-fill linear forwards;
 }

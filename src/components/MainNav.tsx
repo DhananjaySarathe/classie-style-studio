@@ -21,25 +21,25 @@ export function MainNav() {
   const { user } = useAuth();
 
   return (
-    <header className="bg-cream-bg border-b border-soft-border sticky top-0 z-40">
-      <div className="max-w-[1440px] mx-auto px-4 md:px-7 flex items-center justify-between py-4">
+    <header className="bg-bg border-b-[0.5px] border-border sticky top-0 z-40">
+      <div className="max-w-[1440px] mx-auto px-4 md:px-7 flex items-center justify-between py-5">
         <div className="flex items-center gap-12">
-          <Link to="/" className="font-display text-[22px] tracking-[0.32em] text-ink leading-none">
+          <Link to="/" className="font-display text-[24px] tracking-[0.32em] text-ink leading-none">
             CLASSIE
           </Link>
-          <nav className="hidden md:flex items-center gap-7">
+          <nav className="hidden md:flex items-center gap-8">
             {links.map((link) => {
               const active = path === link.href || path.startsWith(link.href);
               return (
                 <a
                   key={link.href}
                   href={link.href}
-                  className="relative text-[12px] text-ink py-1 flex items-center gap-1"
+                  className="relative text-[13px] text-ink py-1 flex items-center gap-1 hover:text-burgundy transition-colors"
                 >
                   {link.label}
                   {link.hasDropdown && <ChevronDown size={11} />}
                   {active && (
-                    <span className="absolute -bottom-[18px] left-0 right-0 h-[1.5px] bg-burgundy" />
+                    <span className="absolute -bottom-[22px] left-0 right-0 h-[1.5px] bg-burgundy" />
                   )}
                 </a>
               );
@@ -70,7 +70,7 @@ export function MainNav() {
           </Link>
           <Link to="/cart" className="flex items-center gap-2 hover:opacity-60 transition-opacity">
             <ShoppingBag size={14} strokeWidth={1.25} />
-            <span className="text-[12px]">Bag ({count})</span>
+            <span className="text-[13px]">Bag ({count})</span>
           </Link>
         </div>
       </div>
