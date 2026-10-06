@@ -9,44 +9,28 @@ import journalImg from "@/assets/journal-feature.jpg";
 type Slide = {
   eyebrow: string;
   title: { line: string; italic?: boolean }[];
-  body: string;
   image: string;
-  primaryCta: { label: string; to: string; params?: Record<string, string> };
-  secondaryCta: { label: string; to: string; params?: Record<string, string> };
-  featured: string;
+  cta: { label: string; to: string; params?: Record<string, string> };
 };
 
 const SLIDES: Slide[] = [
   {
     eyebrow: "VOLUME 02 · THE MODULAR HEEL",
-    title: [{ line: "One pair." }, { line: "A wardrobe", italic: true }, { line: "of looks." }],
-    body: "Sculpted heels and clip-on charms that snap together. One favourite pair, restyled endlessly — no closet overflow.",
+    title: [{ line: "One pair." }, { line: "A wardrobe of looks.", italic: true }],
     image: heroHeel,
-    primaryCta: { label: "Style your pair", to: "/style-studio" },
-    secondaryCta: { label: "Take the quiz", to: "/style-quiz" },
-    featured: "FEATURED · CLESSIA + BLOOM PEARL",
+    cta: { label: "Style your pair", to: "/style-studio" },
   },
   {
     eyebrow: "NEW IN · BLOOM & BOW",
-    title: [{ line: "Quiet detail." }, { line: "Loud", italic: true }, { line: "personality." }],
-    body: "Hand-finished clip-on charms in pearl, satin and ribbon. Snap one on, the heel becomes a different shoe.",
+    title: [{ line: "Quiet detail." }, { line: "Loud personality.", italic: true }],
     image: heroCharm,
-    primaryCta: { label: "Shop charms", to: "/collections/$slug", params: { slug: "clip-ons" } },
-    secondaryCta: { label: "See the look", to: "/style-studio" },
-    featured: "FEATURED · BLOOM PEARL + ROSE",
+    cta: { label: "Shop charms", to: "/collections/$slug", params: { slug: "clip-ons" } },
   },
   {
     eyebrow: "EDIT 03 · THE FESTIVE EDIT",
-    title: [{ line: "Festive," }, { line: "not", italic: true }, { line: "fussy." }],
-    body: "Quietly dressed-up pieces made for the celebrations on your calendar. Pair, swap, and reuse.",
+    title: [{ line: "Festive," }, { line: "not fussy.", italic: true }],
     image: journalImg,
-    primaryCta: {
-      label: "Shop the edit",
-      to: "/collections/$slug",
-      params: { slug: "festive-edit" },
-    },
-    secondaryCta: { label: "Browse heels", to: "/collections/$slug", params: { slug: "heels" } },
-    featured: "FEATURED · ARIA EMERALD + RHINESTONE",
+    cta: { label: "Shop the edit", to: "/collections/$slug", params: { slug: "festive-edit" } },
   },
 ];
 
@@ -56,17 +40,11 @@ export function HeroCarousel() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 32 });
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
-  const [tick, setTick] = useState(0); // re-render trigger for progress bar restart
+  const [tick, setTick] = useState(0);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const goTo = useCallback(
-    (i: number) => {
-      emblaApi?.scrollTo(i);
-    },
-    [emblaApi],
-  );
+  const goTo = useCallback((i: number) => emblaApi?.scrollTo(i), [emblaApi]);
 
-  // Track active slide
   useEffect(() => {
     if (!emblaApi) return;
     const onSelect = () => {
@@ -80,7 +58,6 @@ export function HeroCarousel() {
     };
   }, [emblaApi]);
 
-  // Auto-rotate
   useEffect(() => {
     if (!emblaApi || paused) return;
     timerRef.current = setTimeout(() => emblaApi.scrollNext(), ROTATE_MS);
@@ -111,39 +88,37 @@ export function HeroCarousel() {
       </div>
 
       {/* Slide counter */}
-      <div className="absolute right-4 top-6 md:right-7 md:top-8 caps tracking-[0.24em] text-stone select-none">
+      <div className="absolute right-5 top-6 md:right-8 md:top-8 caps tracking-[0.24em] text-bg/90 bg-ink/35 backdrop-blur-[2px] px-2.5 py-1.5 z-20">
         {String(index + 1).padStart(2, "0")}
-        <span className="mx-1 opacity-40">/</span>
+        <span className="mx-1 opacity-50">/</span>
         {String(SLIDES.length).padStart(2, "0")}
       </div>
 
       {/* Nav arrows */}
-      <div className="absolute bottom-8 right-4 md:bottom-12 md:right-7 flex items-center gap-3 z-20">
+      <div className="absolute bottom-10 right-5 md:bottom-12 md:right-8 flex items-center gap-2 z-20">
         <button
           onClick={prev}
           aria-label="Previous slide"
-          className="w-9 h-9 grid place-items-center border-[0.5px] border-ink text-ink hover:bg-ink hover:text-bg transition-colors"
+          className="w-10 h-10 grid place-items-center bg-bg/85 backdrop-blur-[2px] text-ink hover:bg-ink hover:text-bg transition-colors"
         >
-          <ArrowLeft size={14} strokeWidth={1.4} />
+          <ArrowLeft size={15} strokeWidth={1.4} />
         </button>
         <button
           onClick={next}
           aria-label="Next slide"
-          className="w-9 h-9 grid place-items-center border-[0.5px] border-ink text-ink hover:bg-ink hover:text-bg transition-colors"
+          className="w-10 h-10 grid place-items-center bg-bg/85 backdrop-blur-[2px] text-ink hover:bg-ink hover:text-bg transition-colors"
         >
-          <ArrowRight size={14} strokeWidth={1.4} />
+          <ArrowRight size={15} strokeWidth={1.4} />
         </button>
       </div>
 
       {/* Progress segments */}
-      <div className="absolute bottom-0 left-0 right-0 flex gap-1 px-4 md:px-7 pb-4">
+      <div className="absolute bottom-0 left-0 right-0 flex gap-1 px-4 md:px-7 pb-4 z-20">
         {SLIDES.map((_, i) => (
-          <div key={i} className="flex-1 h-[1px] bg-border overflow-hidden">
+          <div key={i} className="flex-1 h-[2px] bg-bg/30 overflow-hidden">
             <div
               key={`${i}-${tick}`}
-              className={
-                "h-full bg-ink origin-left " + (i === index && !paused ? "progress-fill" : "")
-              }
+              className={"h-full bg-bg origin-left " + (i === index && !paused ? "progress-fill" : "")}
               style={
                 i === index && !paused
                   ? { animationDuration: `${ROTATE_MS}ms` }
@@ -156,7 +131,7 @@ export function HeroCarousel() {
         ))}
       </div>
 
-      {/* Dots — alt nav */}
+      {/* Sr-only dot nav */}
       <div className="sr-only">
         {SLIDES.map((_, i) => (
           <button key={i} onClick={() => goTo(i)}>
@@ -170,87 +145,60 @@ export function HeroCarousel() {
 
 function SlideContent({ slide, isActive }: { slide: Slide; isActive: boolean }) {
   return (
-    <div className="max-w-[1440px] mx-auto px-4 md:px-7 pt-10 md:pt-14 pb-20 md:pb-24">
-      <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-10 md:gap-14 items-stretch min-h-[68vh] md:min-h-[78vh]">
-        {/* Image */}
-        <div className="order-2 md:order-1 relative bg-card-tint">
-          <img
-            src={slide.image}
-            alt=""
-            className={
-              "absolute inset-0 w-full h-full object-cover transition-opacity duration-700 " +
-              (isActive ? "opacity-100" : "opacity-0")
-            }
-          />
-          <div className="absolute left-4 bottom-4 caps tracking-[0.22em] text-bg/90 bg-ink/55 backdrop-blur-[2px] px-2.5 py-1.5">
-            {slide.featured}
-          </div>
-        </div>
+    <div className="relative h-[78vh] md:h-[86vh] min-h-[520px] bg-card-tint overflow-hidden">
+      <img
+        src={slide.image}
+        alt=""
+        className={
+          "absolute inset-0 w-full h-full object-cover transition-opacity duration-700 " +
+          (isActive ? "opacity-100" : "opacity-0")
+        }
+      />
+      {/* Bottom gradient for legibility */}
+      <div className="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-ink/55 via-ink/15 to-transparent" />
 
-        {/* Caption */}
-        <div className="order-1 md:order-2 flex flex-col justify-end md:justify-center pr-0 md:pr-12">
-          {isActive && (
-            <div
-              className="caps flex items-center gap-2.5 mb-6 rise-in"
-              style={{ animationDelay: "0ms" }}
+      {/* Caption overlay (bottom-left) */}
+      <div className="absolute left-5 md:left-8 bottom-12 md:bottom-16 max-w-[640px] text-bg z-10">
+        {isActive && (
+          <div
+            className="caps caps-ink text-bg/95 flex items-center gap-2.5 mb-5 rise-in"
+            style={{ animationDelay: "0ms" }}
+          >
+            <span className="dot-burgundy" />
+            {slide.eyebrow}
+          </div>
+        )}
+        <h1 className="display-hero text-bg mb-7">
+          {slide.title.map((t, i) => (
+            <span
+              key={i}
+              className={"block rise-in " + (t.italic ? "italic text-bg" : "")}
+              style={{ animationDelay: `${120 + i * 80}ms` }}
             >
-              <span className="dot-burgundy" />
-              {slide.eyebrow}
-            </div>
-          )}
-          <h1 className="display-hero text-ink mb-7">
-            {slide.title.map((t, i) => (
-              <span
-                key={i}
-                className={"block rise-in " + (t.italic ? "italic-burgundy" : "")}
-                style={{ animationDelay: `${120 + i * 80}ms` }}
+              {t.line}
+            </span>
+          ))}
+        </h1>
+        {isActive && (
+          <div className="rise-in" style={{ animationDelay: "360ms" }}>
+            {slide.cta.params ? (
+              <Link
+                to={slide.cta.to as "/collections/$slug"}
+                params={slide.cta.params as { slug: string }}
+                className="inline-flex items-center bg-bg text-ink px-6 py-3 text-[11px] uppercase tracking-[0.18em] hover:bg-burgundy hover:text-bg transition-colors"
               >
-                {t.line}
-              </span>
-            ))}
-          </h1>
-          {isActive && (
-            <p
-              className="text-[14px] text-stone max-w-[420px] leading-[1.85] mb-9 rise-in"
-              style={{ animationDelay: "420ms" }}
-            >
-              {slide.body}
-            </p>
-          )}
-          {isActive && (
-            <div
-              className="flex flex-wrap items-center gap-7 rise-in"
-              style={{ animationDelay: "520ms" }}
-            >
-              {slide.primaryCta.params ? (
-                <Link
-                  to={slide.primaryCta.to as "/collections/$slug"}
-                  params={slide.primaryCta.params as { slug: string }}
-                  className="btn-primary"
-                >
-                  {slide.primaryCta.label}
-                </Link>
-              ) : (
-                <Link to={slide.primaryCta.to as "/style-studio"} className="btn-primary">
-                  {slide.primaryCta.label}
-                </Link>
-              )}
-              {slide.secondaryCta.params ? (
-                <Link
-                  to={slide.secondaryCta.to as "/collections/$slug"}
-                  params={slide.secondaryCta.params as { slug: string }}
-                  className="btn-secondary"
-                >
-                  {slide.secondaryCta.label}
-                </Link>
-              ) : (
-                <Link to={slide.secondaryCta.to as "/style-studio"} className="btn-secondary">
-                  {slide.secondaryCta.label}
-                </Link>
-              )}
-            </div>
-          )}
-        </div>
+                {slide.cta.label} →
+              </Link>
+            ) : (
+              <Link
+                to={slide.cta.to as "/style-studio"}
+                className="inline-flex items-center bg-bg text-ink px-6 py-3 text-[11px] uppercase tracking-[0.18em] hover:bg-burgundy hover:text-bg transition-colors"
+              >
+                {slide.cta.label} →
+              </Link>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
